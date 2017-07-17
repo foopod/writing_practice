@@ -80,7 +80,7 @@
                 $("#author").html("~ " + data[0].title);
             }
              $.ajax({
-                url: "http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&_jsonp=quoteCB",
+                url: "https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&_jsonp=quoteCB",
                 method:'get',
                 dataType:'jsonp'
              });

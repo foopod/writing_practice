@@ -1,0 +1,111 @@
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <style>
+        body{
+/*           padding : 0em 10em 0em 10em; */
+            max-width: 40em;
+            font-family: Open Sans;
+            margin: auto;
+        }
+        h1{
+            padding-top: 40px;
+            text-align: center;
+            font-weight: 100;
+            font-size: 48px;
+        }
+        .title{
+            padding-top: 60px;
+            font-size: 12px; 
+            text-decoration: underline;
+        }
+        #quote{
+         font-size: 22px;   
+        }
+        #author{
+            margin-top: -16px;
+            text-align: right;   
+            font-weight: 900;
+        }
+        #paragraph{
+            font-size: 20px;
+        }
+        .address{
+            
+            font-size: 28px;
+        }
+    </style>
+    </head>
+
+    <body>
+        <h1>Writing Practice</h1>
+        <div>
+            <p class="title">Quote</p>
+            <p id="quote"></p>
+            <p id="author"></p>
+        </div>
+        <div>
+            <p class="title">Paragraph</p>
+            <p id="paragraph"></p>
+        </div>
+        <div>
+            <p class="title">Postal Address</p>
+            <div class="address">
+                <span id="name"></span><br/>
+                <span id="street"></span><br/>
+                <span id="city"></span><br/>
+                <span id="state"></span><br/>
+                <span id="postcode"></span>
+                <span id="country"></span>
+            </div>
+        </div>
+        <br/><br/><br/><br/><br/><br/>
+        
+        <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+        <script>
+            function toTitleCase(str){
+                return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+            }
+            function getFirstProp(obj) {
+                for (var i in obj) return obj[i];
+            }
+ 
+            function quoteCB(data){
+                var quote = data[0].content;
+                $("#quote").html(data[0].content);
+                $("#author").html("~ " + data[0].title);
+            }
+             $.ajax({
+                url: "http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&_jsonp=quoteCB",
+                method:'get',
+                dataType:'jsonp'
+             });
+            $.ajax({
+              url: 'https://json2jsonp.com/?url=http://www.randomtext.me/api/gibberish/p-1/40-45',
+              dataType: 'jsonp',
+            method:'get',
+              success: function(data) {
+                  $("#paragraph").html(data.text_out );
+              }
+            });
+            $.ajax({
+              url: 'https://randomuser.me/api/?nat=us,dk,fr,gb,au,nz',
+              dataType: 'json',
+              success: function(data) {
+                  $("#name").html(toTitleCase(data.results[0].name.title + "  " + data.results[0].name.first + "  "+ data.results[0].name.last));
+                  $("#street").html(toTitleCase(data.results[0].location.street));
+                  $("#city").html(toTitleCase(data.results[0].location.city));
+                  $("#state").html(toTitleCase(data.results[0].location.state));
+                  $("#postcode").html(data.results[0].location.postcode+ ", ");
+                  $("#country").html(data.results[0].nat);
+              }
+            });
+
+        </script>
+        
+    </body>
+</html>
